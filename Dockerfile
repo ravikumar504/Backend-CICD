@@ -1,6 +1,6 @@
 FROM almalinux:9
 RUN dnf module disable nodejs -y
-RUN dnf module enable nodejs:23 -y
+RUN dnf module enable nodejs:25 -y
 RUN dnf install nodejs -y
 WORKDIR /opt/backend
 COPY package.json ./
