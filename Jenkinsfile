@@ -3,7 +3,7 @@ pipeline {
     environment {
         project = 'Expense'
         appversion = ''
-        component = 'backend'
+        component = 'Backend'
         ACC_ID = '467862710606'
     }
     stages {
