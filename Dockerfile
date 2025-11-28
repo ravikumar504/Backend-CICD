@@ -1,4 +1,7 @@
-FROM node:23-alpine
+FROM almalinux:9
+RUN dnf module disable nodejs -y
+RUN dnf module enable nodejs:20 -y
+RUN dnf install nodejs -y
 WORKDIR /opt/backend
 COPY package.json ./
 COPY *.js ./
