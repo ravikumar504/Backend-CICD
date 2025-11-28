@@ -2,7 +2,7 @@ pipeline {
     agent { label 'Agent-1'}
     environment {
         project = 'Expense'
-        appversion = ''
+        appVersion = ''
         component = 'Backend'
         ACC_ID = '467862710606'
     }
@@ -11,7 +11,8 @@ pipeline {
             steps {
                 script{
                     def packageJson = readJSON file: 'package.json'
-                    appversion = packageJson.version
+                    appVersion = packageJson.version
+                    echo "Version is: $appVersion"
                 }
             }
         }
