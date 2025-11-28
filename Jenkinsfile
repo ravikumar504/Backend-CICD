@@ -1,30 +1,36 @@
 pipeline {
-    agent { label 'Agent-1'}
-    environment {
-        project = 'expense'
+    agent { label 'Agent-1' }
+    environment { 
+        PROJECT = 'expense'
+        COMPONENT = 'backend'
         appVersion = ''
-        component = 'backend'
         ACC_ID = '467862710606'
     }
+    options {
+        disableConcurrentBuilds()
+        timeout(time: 30, unit: 'MINUTES')
+    }
+    
     stages {
         stage('Read Version') {
             steps {
-                script{
-                    def packageJson = readJSON file: 'package.json'
-                    appVersion = packageJson.version
-                    echo "Version is: $appVersion"
-                }
+               script{
+                 def packageJson = readJSON file: 'package.json'
+                 appVersion = packageJson.version
+                 echo "Version is: $appVersion"
+               }
             }
         }
-        stage('install dependencies') {
+        stage('Install Dependencies') {
             steps {
-                script{
-                    sh """
-                        npm install
-                    """
-                }
+               script{ 
+                 sh """
+                    npm install
+                 """
+               }
             }
         }
+       
         stage('Docker Build') {
             steps {
                script{
@@ -32,17 +38,27 @@ pipeline {
                     sh """
                     aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
 
-                    docker build -t ${project}/${component}:${appVersion} .
-
-                    docker tag ${project}/${component}:${appVersion} ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${project}/${component}:${appVersion}
+                    docker build -t  ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${project}/${component}:${appVersion} .
 
                     docker push ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${project}/${component}:${appVersion}
-
                     """
                 }
                  
                }
             }
+        }
+        
+    }
+    post { 
+        always { 
+            echo 'I will always say Hello again!'
+            deleteDir()
+        }
+        failure { 
+            echo 'I will run when pipeline is failed'
+        }
+        success { 
+            echo 'I will run when pipeline is success'
         }
     }
 }
