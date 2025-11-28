@@ -12,7 +12,7 @@ pipeline {
     }
     
     stages {
-        stage('Read Version') {
+        /* stage('Read Version') {
             steps {
                script{
                  def packageJson = readJSON file: 'package.json'
@@ -29,7 +29,7 @@ pipeline {
                  """
                }
             }
-        }
+        } */
        
         stage('Docker Build') {
             steps {
