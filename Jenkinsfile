@@ -34,9 +34,9 @@ pipeline {
 
                     docker build -t ${project}/${component} 
 
-                    docker tag expense/backend:latest ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${project}/${component}:${appVersion}
+                    docker tag ${project}/${component}:${appVersion} ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${project}/${component}:${appVersion}
 
-                    docker push 467862710606.dkr.ecr.us-east-1.amazonaws.com/${project}/${component}:${appVersion}
+                    docker push ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${project}/${component}:${appVersion}
 
                     """
                 }
